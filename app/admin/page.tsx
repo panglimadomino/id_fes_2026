@@ -1,4 +1,6 @@
 import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
+import { getSuperAdminFromSession } from "@/lib/auth/admin-session";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +13,9 @@ type EventStats = {
 };
 
 export default async function AdminPage() {
+  const admin = await getSuperAdminFromSession();
+  if (!admin) redirect("/admin/login");
+
   const supabase = createAdminSupabaseClient();
 
   const { data: events, error: eventError } = await supabase
@@ -56,6 +61,12 @@ export default async function AdminPage() {
         <section className="panel">
           <h1>Admin Dashboard</h1>
           <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
+          <p style={{ marginTop: 8, fontSize: 14, opacity: 0.8 }}>
+            Login sebagai: <strong>{admin.email}</strong>
+          </p>
+          <form action="/api/admin/logout" method="post" style={{ marginTop: 12 }}>
+            <button type="submit">Keluar</button>
+          </form>
           {pageError ? <p style={{ color: "#d00" }}>Error: {pageError}</p> : null}
         </section>
 

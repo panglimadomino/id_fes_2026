@@ -15,7 +15,7 @@ export default function HomePage() {
             <a href="#events">Event</a>
             <a href="#why">Keunggulan</a>
             <a href="#contact">Kontak</a>
-            <Link href="/admin" className="main-nav__login">
+            <Link href="/admin/login" className="main-nav__login">
               Masuk
             </Link>
           </nav>
