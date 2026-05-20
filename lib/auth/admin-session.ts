@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { createClient } from "@supabase/supabase-js";
-import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
 
 export const ADMIN_SESSION_COOKIE = "idfes_admin_session";
 
@@ -22,6 +21,18 @@ export function createSupabaseAuthClient() {
   });
 }
 
+export function createSupabaseAuthedClient(accessToken: string) {
+  const { url, anonKey } = getSupabasePublicEnv();
+  return createClient(url, anonKey, {
+    global: {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+}
+
 export async function getSuperAdminFromSession() {
   const cookieStore = await cookies();
   const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
@@ -31,8 +42,8 @@ export async function getSuperAdminFromSession() {
   const { data: authData, error: authError } = await supabaseAuth.auth.getUser(token);
   if (authError || !authData.user) return null;
 
-  const supabaseAdmin = createAdminSupabaseClient();
-  const { data: roleRow, error: roleError } = await supabaseAdmin
+  const supabaseAuthed = createSupabaseAuthedClient(token);
+  const { data: roleRow, error: roleError } = await supabaseAuthed
     .from("user_global_roles")
     .select("role")
     .eq("user_id", authData.user.id)
@@ -43,6 +54,6 @@ export async function getSuperAdminFromSession() {
   return {
     id: authData.user.id,
     email: authData.user.email ?? "",
+    accessToken: token,
   };
 }
-

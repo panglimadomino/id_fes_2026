@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 import {
   ADMIN_SESSION_COOKIE,
   createSupabaseAuthClient,
+  createSupabaseAuthedClient,
 } from "@/lib/auth/admin-session";
-import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
 
 type LoginPayload = {
   email?: string;
@@ -37,8 +37,8 @@ export async function POST(req: Request) {
     );
   }
 
-  const supabaseAdmin = createAdminSupabaseClient();
-  const { data: roleRow, error: roleError } = await supabaseAdmin
+  const supabaseAuthed = createSupabaseAuthedClient(signInData.session.access_token);
+  const { data: roleRow, error: roleError } = await supabaseAuthed
     .from("user_global_roles")
     .select("role")
     .eq("user_id", signInData.user.id)
@@ -62,4 +62,3 @@ export async function POST(req: Request) {
 
   return NextResponse.json({ ok: true });
 }
-

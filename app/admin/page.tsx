@@ -1,5 +1,7 @@
-import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
-import { getSuperAdminFromSession } from "@/lib/auth/admin-session";
+import {
+  createSupabaseAuthedClient,
+  getSuperAdminFromSession,
+} from "@/lib/auth/admin-session";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -16,7 +18,7 @@ export default async function AdminPage() {
   const admin = await getSuperAdminFromSession();
   if (!admin) redirect("/admin/login");
 
-  const supabase = createAdminSupabaseClient();
+  const supabase = createSupabaseAuthedClient(admin.accessToken);
 
   const { data: events, error: eventError } = await supabase
     .from("events")
