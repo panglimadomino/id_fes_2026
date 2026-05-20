@@ -1,5 +1,7 @@
 import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
 
+export const dynamic = "force-dynamic";
+
 type EventStats = {
   id: string;
   slug: string;
@@ -17,21 +19,27 @@ export default async function AdminPage() {
     .order("created_at", { ascending: false })
     .returns<EventStats[]>();
 
-  if (eventError) {
-    throw new Error(eventError.message);
-  }
+  const pageError = eventError?.message ?? null;
 
   const eventIds = (events ?? []).map((e) => e.id);
   const regCountByEvent = new Map<string, number>();
 
-  if (eventIds.length > 0) {
+  if (!pageError && eventIds.length > 0) {
     const { data: regs, error: regError } = await supabase
       .from("registrations")
       .select("event_id")
       .in("event_id", eventIds);
 
     if (regError) {
-      throw new Error(regError.message);
+      return (
+        <div className="grid">
+          <section className="panel">
+            <h1>Admin Dashboard</h1>
+            <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
+            <p style={{ color: "#d00" }}>Error: {regError.message}</p>
+          </section>
+        </div>
+      );
     }
 
     for (const r of regs ?? []) {
@@ -45,6 +53,7 @@ export default async function AdminPage() {
       <section className="panel">
         <h1>Admin Dashboard</h1>
         <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
+        {pageError ? <p style={{ color: "#d00" }}>Error: {pageError}</p> : null}
       </section>
 
       <section className="panel">
