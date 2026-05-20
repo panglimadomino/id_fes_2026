@@ -151,6 +151,18 @@ th, td {
   opacity: 1;
 }
 
+.main-nav__login {
+  margin-left: 8px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  border-radius: 0;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.main-nav__login:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
 .hero {
   position: relative;
   width: var(--content-width);

@@ -10,11 +10,14 @@ export default function HomePage() {
             <span className="brand__sub">Indonesia Domino Festival</span>
           </a>
           <nav className="main-nav" aria-label="Main navigation">
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#events">Events</a>
-            <a href="#why">Why Join</a>
-            <a href="#contact">Contact</a>
+            <a href="#home">Beranda</a>
+            <a href="#about">Tentang</a>
+            <a href="#events">Event</a>
+            <a href="#why">Keunggulan</a>
+            <a href="#contact">Kontak</a>
+            <Link href="/admin" className="main-nav__login">
+              Masuk
+            </Link>
           </nav>
         </div>
       </header>
@@ -22,17 +25,17 @@ export default function HomePage() {
       <section className="hero">
         <div className="hero__overlay" />
         <div className="hero__content">
-          <p className="hero__date">22-25 October 2026</p>
-          <h1 className="hero__title">A city that plays. A festival that celebrates.</h1>
+          <p className="hero__date">22-25 Oktober 2026</p>
+          <h1 className="hero__title">Kota yang bertanding. Festival yang merayakan.</h1>
           <p className="hero__desc">
             Platform multi-event untuk pendaftaran, pairing, dan scoring pertandingan domino.
           </p>
           <div className="hero__cta">
             <Link href="/events/id-fes-2026-jakarta" className="btn btn--light">
-              Register Now
+              Daftar Sekarang
             </Link>
             <Link href="/admin" className="btn btn--ghost">
-              Admin Dashboard
+              Dashboard Admin
             </Link>
           </div>
         </div>
@@ -54,11 +57,11 @@ export default function HomePage() {
                 <p>Super admin dapat membuat banyak pertandingan dalam satu website.</p>
               </article>
               <article>
-                <h3>Flexible Schedule</h3>
+                <h3>Jadwal Fleksibel</h3>
                 <p>Setiap event punya jadwal pendaftaran, pairing, dan match yang berbeda.</p>
               </article>
               <article>
-                <h3>Live Scoring</h3>
+                <h3>Skor Real-Time</h3>
                 <p>Sistem RR + SE dan progression bracket otomatis saat skor diinput.</p>
               </article>
             </div>
@@ -67,12 +70,12 @@ export default function HomePage() {
 
         <section className="section section--dark" id="events">
           <div className="section__inner">
-            <h2>Event Tracks</h2>
+            <h2>Jalur Kompetisi</h2>
             <div className="tracks">
-              <div className="track">Public Registration</div>
-              <div className="track">Round Robin Phase</div>
+              <div className="track">Pendaftaran Publik</div>
+              <div className="track">Fase Round Robin</div>
               <div className="track">Single Elimination</div>
-              <div className="track">Live Result Board</div>
+              <div className="track">Papan Skor Langsung</div>
             </div>
           </div>
         </section>
@@ -80,7 +83,7 @@ export default function HomePage() {
         <section className="section section--light" id="why">
           <div className="section__inner two-col">
             <div>
-              <h2>Why join ID Festival?</h2>
+              <h2>Kenapa ikut ID Festival?</h2>
               <p>
                 Sistem digital memudahkan peserta daftar, panitia verifikasi, dan pertandingan
                 berjalan transparan dari pairing sampai final.
@@ -92,11 +95,11 @@ export default function HomePage() {
                 <span>Semua event dalam satu dashboard</span>
               </div>
               <div>
-                <strong>100% Structured</strong>
+                <strong>100% Terstruktur</strong>
                 <span>Data peserta, jadwal, skor, dan bracket tertata</span>
               </div>
               <div>
-                <strong>Manual Pairing Control</strong>
+                <strong>Kontrol Pairing Manual</strong>
                 <span>Pairing dibuat super admin saat pendaftaran ditutup</span>
               </div>
             </div>
@@ -112,7 +115,7 @@ export default function HomePage() {
           </div>
           <div>
             <p>
-              Public registration:{" "}
+              Pendaftaran publik:{" "}
               <Link href="/events/id-fes-2026-jakarta">/events/id-fes-2026-jakarta</Link>
             </p>
             <p>
