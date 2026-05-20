@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="id">
       <body>
-        <main className="container">{children}</main>
+        <main className="app-main">{children}</main>
       </body>
     </html>
   );

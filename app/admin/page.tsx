@@ -32,12 +32,14 @@ export default async function AdminPage() {
 
     if (regError) {
       return (
-        <div className="grid">
-          <section className="panel">
-            <h1>Admin Dashboard</h1>
-            <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
-            <p style={{ color: "#d00" }}>Error: {regError.message}</p>
-          </section>
+        <div className="page-wrap">
+          <div className="grid">
+            <section className="panel">
+              <h1>Admin Dashboard</h1>
+              <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
+              <p style={{ color: "#d00" }}>Error: {regError.message}</p>
+            </section>
+          </div>
         </div>
       );
     }
@@ -49,37 +51,39 @@ export default async function AdminPage() {
   }
 
   return (
-    <div className="grid">
-      <section className="panel">
-        <h1>Admin Dashboard</h1>
-        <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
-        {pageError ? <p style={{ color: "#d00" }}>Error: {pageError}</p> : null}
-      </section>
+    <div className="page-wrap">
+      <div className="grid">
+        <section className="panel">
+          <h1>Admin Dashboard</h1>
+          <p>Ringkasan event dan jumlah pendaftar saat ini.</p>
+          {pageError ? <p style={{ color: "#d00" }}>Error: {pageError}</p> : null}
+        </section>
 
-      <section className="panel">
-        <table>
-          <thead>
-            <tr>
-              <th>Event</th>
-              <th>Slug</th>
-              <th>Status</th>
-              <th>Reg Close</th>
-              <th>Total Pendaftar</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(events ?? []).map((e) => (
-              <tr key={e.id}>
-                <td>{e.name}</td>
-                <td>{e.slug}</td>
-                <td>{e.status}</td>
-                <td>{e.reg_close_at ?? "-"}</td>
-                <td>{regCountByEvent.get(e.id) ?? 0}</td>
+        <section className="panel">
+          <table>
+            <thead>
+              <tr>
+                <th>Event</th>
+                <th>Slug</th>
+                <th>Status</th>
+                <th>Reg Close</th>
+                <th>Total Pendaftar</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            </thead>
+            <tbody>
+              {(events ?? []).map((e) => (
+                <tr key={e.id}>
+                  <td>{e.name}</td>
+                  <td>{e.slug}</td>
+                  <td>{e.status}</td>
+                  <td>{e.reg_close_at ?? "-"}</td>
+                  <td>{regCountByEvent.get(e.id) ?? 0}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+      </div>
     </div>
   );
 }

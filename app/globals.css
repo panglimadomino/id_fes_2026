@@ -1,4 +1,5 @@
 :root {
+  --content-width: 70vw;
   --bg: #f7f5ef;
   --ink: #1e2a2f;
   --card: #ffffff;
@@ -11,11 +12,21 @@
 body {
   margin: 0;
   font-family: "Segoe UI", "Helvetica Neue", sans-serif;
-  background: radial-gradient(circle at 15% 10%, #fff8dd 0%, var(--bg) 35%, #edf3f2 100%);
+  background: #ffffff;
   color: var(--ink);
 }
 
 .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.app-main {
+  min-height: 100vh;
+}
+
+.page-wrap {
   max-width: 1000px;
   margin: 0 auto;
   padding: 24px;
@@ -82,7 +93,7 @@ th, td {
 
 .home-page {
   min-height: 100vh;
-  background: #0f1114;
+  background: #ffffff;
   color: #f4f6f7;
 }
 
@@ -96,7 +107,7 @@ th, td {
 }
 
 .site-header__inner {
-  max-width: 1200px;
+  width: var(--content-width);
   margin: 0 auto;
   padding: 14px 24px;
   display: flex;
@@ -142,6 +153,8 @@ th, td {
 
 .hero {
   position: relative;
+  width: var(--content-width);
+  margin: 0 auto;
   min-height: 76vh;
   display: grid;
   place-items: center;
@@ -230,7 +243,7 @@ th, td {
 }
 
 .section__inner {
-  max-width: 1200px;
+  width: var(--content-width);
   margin: 0 auto;
 }
 
@@ -307,7 +320,7 @@ th, td {
 }
 
 .site-footer__inner {
-  max-width: 1200px;
+  width: var(--content-width);
   margin: 0 auto;
   padding: 34px 24px;
   display: grid;
@@ -329,6 +342,14 @@ th, td {
 }
 
 @media (max-width: 900px) {
+  :root {
+    --content-width: 100vw;
+  }
+
+  .page-wrap {
+    padding: 16px;
+  }
+
   .site-header__inner {
     flex-direction: column;
     align-items: flex-start;
