@@ -31,8 +31,18 @@ export async function POST(req: Request) {
     });
 
   if (signInError || !signInData.session || !signInData.user) {
+    const detail = signInError?.message?.toLowerCase() ?? "";
+    const errorMessage =
+      detail.includes("invalid login credentials")
+        ? "Email atau kata sandi tidak valid."
+        : detail.includes("email not confirmed")
+          ? "Email belum terverifikasi. Cek inbox lalu verifikasi email dulu."
+          : detail.includes("password")
+            ? "Kata sandi belum disetel / tidak valid. Silakan reset password di Supabase Auth."
+            : "Gagal login. Cek email/kata sandi atau setel ulang password di Supabase Auth.";
+
     return NextResponse.json(
-      { ok: false, error: "Email atau kata sandi tidak valid." },
+      { ok: false, error: errorMessage },
       { status: 401 },
     );
   }

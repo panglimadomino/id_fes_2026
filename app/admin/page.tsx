@@ -1,7 +1,7 @@
 import {
-  createSupabaseAuthedClient,
   getSuperAdminFromSession,
 } from "@/lib/auth/admin-session";
+import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
 import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,9 @@ export default async function AdminPage() {
   const admin = await getSuperAdminFromSession();
   if (!admin) redirect("/admin/login");
 
-  const supabase = createSupabaseAuthedClient(admin.accessToken);
+  // Session login tetap divalidasi, tetapi query dashboard dijalankan
+  // dengan service-role agar tidak tergantung policy read user token.
+  const supabase = createAdminSupabaseClient();
 
   const { data: events, error: eventError } = await supabase
     .from("events")

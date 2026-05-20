@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { RegisterForm } from "@/components/register-form";
+import { PublicShell } from "@/components/public-shell";
 import { createPublicSupabaseClient } from "@/lib/supabase/public-client";
 import { EventRow } from "@/lib/types";
 
@@ -30,23 +31,27 @@ export default async function EventPage({ params }: Props) {
   const canRegister = data.status === "published" && data.allow_public_registration && inWindow;
 
   return (
-    <div className="page-wrap">
-      <div className="grid">
-        <section className="panel">
-          <h1>{data.name}</h1>
-          <p>{data.description ?? "Tanpa deskripsi"}</p>
-          <p><strong>Window:</strong> {data.reg_open_at ?? "-"} s/d {data.reg_close_at ?? "-"}</p>
-        </section>
-
-        {canRegister ? (
-          <RegisterForm eventSlug={data.slug} />
-        ) : (
+    <PublicShell activeTab="events">
+      <div className="page-wrap">
+        <div className="grid">
           <section className="panel">
-            <h3>Pendaftaran Ditutup</h3>
-            <p>Pendaftaran belum dibuka atau sudah ditutup.</p>
+            <h1>{data.name}</h1>
+            <p>{data.description ?? "Tanpa deskripsi"}</p>
+            <p>
+              <strong>Window:</strong> {data.reg_open_at ?? "-"} s/d {data.reg_close_at ?? "-"}
+            </p>
           </section>
-        )}
+
+          {canRegister ? (
+            <RegisterForm eventSlug={data.slug} />
+          ) : (
+            <section className="panel">
+              <h3>Pendaftaran Ditutup</h3>
+              <p>Pendaftaran belum dibuka atau sudah ditutup.</p>
+            </section>
+          )}
+        </div>
       </div>
-    </div>
+    </PublicShell>
   );
 }

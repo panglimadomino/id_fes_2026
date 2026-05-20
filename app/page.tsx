@@ -1,27 +1,9 @@
 import Link from "next/link";
+import { PublicShell } from "@/components/public-shell";
 
 export default function HomePage() {
   return (
-    <div className="home-page" id="home">
-      <header className="site-header">
-        <div className="site-header__inner">
-          <a className="brand" href="#home">
-            <span className="brand__title">ID Festival 2026</span>
-            <span className="brand__sub">Indonesia Domino Festival</span>
-          </a>
-          <nav className="main-nav" aria-label="Main navigation">
-            <a href="#home">Beranda</a>
-            <a href="#about">Tentang</a>
-            <a href="#events">Event</a>
-            <a href="#why">Keunggulan</a>
-            <a href="#contact">Kontak</a>
-            <Link href="/admin/login" className="main-nav__login">
-              Masuk
-            </Link>
-          </nav>
-        </div>
-      </header>
-
+    <PublicShell activeTab="home">
       <section className="hero">
         <div className="hero__overlay" />
         <div className="hero__content">
@@ -106,24 +88,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-
-      <footer className="site-footer" id="contact">
-        <div className="site-footer__inner">
-          <div>
-            <h3>ID Festival 2026</h3>
-            <p>Indonesia Domino Festival - Jakarta 2026</p>
-          </div>
-          <div>
-            <p>
-              Pendaftaran publik:{" "}
-              <Link href="/events/id-fes-2026-jakarta">/events/id-fes-2026-jakarta</Link>
-            </p>
-            <p>
-              Admin: <Link href="/admin">/admin</Link>
-            </p>
-          </div>
-        </div>
-      </footer>
-    </div>
+    </PublicShell>
   );
 }
