@@ -1,5 +1,6 @@
 :root {
   --content-width: 70vw;
+  --header-height: 84px;
   --bg: #f7f5ef;
   --ink: #1e2a2f;
   --card: #ffffff;
@@ -170,9 +171,9 @@ th, td {
 
 .hero {
   position: relative;
-  width: var(--content-width);
+  width: 100%;
   margin: 0 auto;
-  min-height: 76vh;
+  min-height: calc(100svh - var(--header-height));
   display: grid;
   place-items: center;
   text-align: center;
@@ -401,6 +402,7 @@ th, td {
 @media (max-width: 900px) {
   :root {
     --content-width: 100vw;
+    --header-height: 132px;
   }
 
   .page-wrap {
@@ -418,7 +420,7 @@ th, td {
   }
 
   .hero {
-    min-height: 68vh;
+    min-height: calc(100svh - var(--header-height));
   }
 
   .hero__date {
