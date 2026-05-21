@@ -529,9 +529,10 @@ th, td {
 
 .footer-brand__logo {
   width: 198px;
-  height: 198px;
+  height: auto;
+  display: block;
   object-fit: contain;
-  margin-bottom: 14px;
+  margin-bottom: 2px;
 }
 
 .footer-sitemap__cols {
@@ -661,7 +662,7 @@ th, td {
 
   .footer-brand__logo {
     width: 165px;
-    height: 165px;
+    height: auto;
   }
 
   .site-footer h3 {
