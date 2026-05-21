@@ -213,6 +213,19 @@ th, td {
   opacity: 1;
 }
 
+.nav-dropdown__caret {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 7px solid #1d2733;
+  transition: transform 0.2s ease;
+}
+
+.nav-dropdown__caret--open {
+  transform: rotate(180deg);
+}
+
 .nav-dropdown__menu {
   display: none;
   position: absolute;
