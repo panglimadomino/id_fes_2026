@@ -392,6 +392,9 @@ th, td {
 
 .section {
   padding: 78px 24px;
+  min-height: calc(100svh - var(--header-height));
+  display: grid;
+  align-items: center;
 }
 
 .section__inner {
