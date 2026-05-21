@@ -62,7 +62,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="section section--light" id="why">
+        <section className="section section--light" id="rules">
           <div className="section__inner two-col">
             <div>
               <h2>Kenapa ikut ID Festival?</h2>

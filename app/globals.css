@@ -153,6 +153,57 @@ th, td {
   opacity: 1;
 }
 
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown__toggle {
+  height: auto;
+  border: 0;
+  background: transparent;
+  color: #f3f6fb;
+  font: inherit;
+  font-weight: 600;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.nav-dropdown__toggle:hover {
+  opacity: 1;
+}
+
+.nav-dropdown__menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  min-width: 280px;
+  background: #141922;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 8px;
+  z-index: 30;
+}
+
+.nav-dropdown__menu a {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 8px;
+}
+
+.nav-dropdown__menu a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.nav-dropdown:hover .nav-dropdown__menu,
+.nav-dropdown--open .nav-dropdown__menu {
+  display: grid;
+  gap: 2px;
+}
+
 .main-nav__active {
   text-decoration: underline;
   text-underline-offset: 6px;
@@ -475,6 +526,18 @@ th, td {
   .main-nav a {
     display: block;
     padding: 6px 0;
+  }
+
+  .nav-dropdown,
+  .nav-dropdown__toggle {
+    width: 100%;
+    text-align: left;
+  }
+
+  .nav-dropdown__menu {
+    position: static;
+    min-width: 100%;
+    margin-top: 8px;
   }
 
   .main-nav__login {

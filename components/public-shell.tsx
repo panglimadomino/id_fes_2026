@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ReactNode, useState } from "react";
 
-type TabKey = "home" | "about" | "events" | "why" | "contact";
+type TabKey = "home" | "events" | "rules" | "contact";
 
 type PublicShellProps = {
   children: ReactNode;
@@ -16,9 +16,11 @@ function navClass(tab: TabKey, activeTab?: TabKey) {
 
 export function PublicShell({ children, activeTab }: PublicShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [matchesOpen, setMatchesOpen] = useState(false);
 
   function closeMenu() {
     setMenuOpen(false);
+    setMatchesOpen(false);
   }
 
   return (
@@ -49,20 +51,29 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
             <Link href="/" className={navClass("home", activeTab)} onClick={closeMenu}>
               Beranda
             </Link>
-            <Link href="/#about" className={navClass("about", activeTab)} onClick={closeMenu}>
-              Tentang
-            </Link>
-            <Link href="/#events" className={navClass("events", activeTab)} onClick={closeMenu}>
-              Event
-            </Link>
-            <Link href="/#why" className={navClass("why", activeTab)} onClick={closeMenu}>
-              Keunggulan
+            <div className={`nav-dropdown ${matchesOpen ? "nav-dropdown--open" : ""}`}>
+              <button
+                type="button"
+                className={`nav-dropdown__toggle ${activeTab === "events" ? "main-nav__active" : ""}`}
+                aria-expanded={matchesOpen}
+                onClick={() => setMatchesOpen((prev) => !prev)}
+              >
+                Pertandingan
+              </button>
+              <div className="nav-dropdown__menu">
+                <Link href="/events/id-fes-2026-surabaya" onClick={closeMenu}>
+                  Surabaya Domino Tournament
+                </Link>
+                <Link href="/events/id-fes-2026-jakarta" onClick={closeMenu}>
+                  Jakarta Domino Tournament
+                </Link>
+              </div>
+            </div>
+            <Link href="/#rules" className={navClass("rules", activeTab)} onClick={closeMenu}>
+              Peraturan
             </Link>
             <Link href="/#contact" className={navClass("contact", activeTab)} onClick={closeMenu}>
               Kontak
-            </Link>
-            <Link href="/admin/login" className="main-nav__login" onClick={closeMenu}>
-              Masuk
             </Link>
           </nav>
         </div>
