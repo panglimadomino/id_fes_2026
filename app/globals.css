@@ -227,7 +227,6 @@ th, td {
   text-decoration: none;
 }
 
-.nav-dropdown:hover .nav-dropdown__menu,
 .nav-dropdown--open .nav-dropdown__menu {
   display: grid;
   gap: 2px;

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ReactNode, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 
 type TabKey = "home" | "events" | "rules" | "contact";
 
@@ -26,6 +26,20 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
     setMenuOpen(false);
     setMatchesOpen(false);
   }
+
+  function handleEventsClick() {
+    setMatchesOpen(true);
+  }
+
+  useEffect(() => {
+    function syncDropdownWithHash() {
+      setMatchesOpen(window.location.hash === "#about");
+    }
+
+    syncDropdownWithHash();
+    window.addEventListener("hashchange", syncDropdownWithHash);
+    return () => window.removeEventListener("hashchange", syncDropdownWithHash);
+  }, []);
 
   return (
     <div className="public-page">
@@ -59,7 +73,7 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
               <Link
                 href="/#about"
                 className={`nav-dropdown__link ${activeTab === "events" ? "main-nav__active" : ""}`}
-                onClick={closeMenu}
+                onClick={handleEventsClick}
               >
                 ID Fes 2026
               </Link>
