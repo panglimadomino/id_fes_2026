@@ -486,10 +486,10 @@ th, td {
 .site-footer__inner {
   width: min(var(--content-max), var(--content-width));
   margin: 0 auto;
-  padding: 34px 0;
+  padding: 44px 0;
   display: grid;
-  gap: 12px;
-  grid-template-columns: 1.1fr 1fr;
+  gap: 26px;
+  grid-template-columns: 1.3fr 1.2fr 1fr;
 }
 
 .table-scroll {
@@ -503,15 +503,43 @@ th, td {
 
 .site-footer h3 {
   margin: 0 0 8px;
+  font-size: 36px;
+  line-height: 1;
 }
 
 .site-footer p {
   margin: 0 0 8px;
   color: #c4cbd1;
+  font-size: 24px;
+  line-height: 1.4;
 }
 
 .site-footer a {
   color: #8ce2d9;
+  font-size: 24px;
+}
+
+.footer-brand__logo {
+  width: 128px;
+  height: 128px;
+  object-fit: contain;
+  margin-bottom: 14px;
+}
+
+.footer-sitemap__cols {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.footer-sitemap__cols ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer-sitemap__cols li {
+  margin: 0 0 8px;
 }
 
 .password-field {
@@ -623,6 +651,20 @@ th, td {
     grid-template-columns: 1fr;
   }
 
+  .footer-brand__logo {
+    width: 96px;
+    height: 96px;
+  }
+
+  .site-footer h3 {
+    font-size: 30px;
+  }
+
+  .site-footer p,
+  .site-footer a {
+    font-size: 20px;
+  }
+
   .hero {
     min-height: calc(100svh - var(--header-height));
   }
@@ -681,5 +723,9 @@ th, td {
   .feature-list h3,
   .metrics strong {
     font-size: 20px;
+  }
+
+  .footer-sitemap__cols {
+    grid-template-columns: 1fr;
   }
 }

@@ -98,17 +98,63 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
 
       <footer className="site-footer" id="contact">
         <div className="site-footer__inner">
-          <div>
+          <div className="footer-brand">
+            {logoUrl ? <img className="footer-brand__logo" src={logoUrl} alt="ID Festival 2026 Logo" /> : null}
             <h3>ID Festival 2026</h3>
             <p>Indonesia Domino Festival - Jakarta 2026</p>
-          </div>
-          <div>
             <p>
-              Pendaftaran publik:{" "}
-              <Link href="/events/id-fes-2026-jakarta">/events/id-fes-2026-jakarta</Link>
+              Sekretariat:
+              <br />
+              Jakarta, Indonesia
+            </p>
+            <p>Email: panitia@idfestival2026.id</p>
+          </div>
+
+          <div className="footer-sitemap">
+            <h3>Halaman</h3>
+            <div className="footer-sitemap__cols">
+              <ul>
+                <li>
+                  <Link href="/">Beranda</Link>
+                </li>
+                <li>
+                  <Link href="/#about">ID Fes 2026</Link>
+                </li>
+                <li>
+                  <Link href="/events/id-fes-2026-surabaya">Surabaya</Link>
+                </li>
+                <li>
+                  <Link href="/events/id-fes-2026-jakarta">DKI Jakarta</Link>
+                </li>
+              </ul>
+              <ul>
+                <li>
+                  <Link href="/#rules">Peraturan</Link>
+                </li>
+                <li>
+                  <Link href="/#events">Jalur Kompetisi</Link>
+                </li>
+                <li>
+                  <Link href="/admin/login">Masuk Admin</Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="footer-contact">
+            <h3>Kontak</h3>
+            <p>
+              <a href="mailto:panitia@idfestival2026.id">panitia@idfestival2026.id</a>
             </p>
             <p>
-              Admin: <Link href="/admin/login">/admin/login</Link>
+              <a href="https://instagram.com" target="_blank" rel="noreferrer">
+                Instagram
+              </a>
+            </p>
+            <p>
+              <a href="https://tiktok.com" target="_blank" rel="noreferrer">
+                TikTok
+              </a>
             </p>
           </div>
         </div>
