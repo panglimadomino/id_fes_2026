@@ -101,7 +101,10 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
           <div className="footer-brand">
             {logoUrl ? <img className="footer-brand__logo" src={logoUrl} alt="ID Festival 2026 Logo" /> : null}
             <p>
-              Jl. Percetakan Negara No.158 NO.158, RT.1/RW.5, Rawasari, Kec. Cemp. Putih, Kota Jakarta Pusat,
+              Jl. Percetakan Negara No.158 NO.158, RT.1/RW.5, Rawasari,
+              <br />
+              Kec. Cemp. Putih, Kota Jakarta Pusat,
+              <br />
               Daerah Khusus Ibukota Jakarta 10520
             </p>
             <p>Email: panitia@idfestival2026.id</p>
