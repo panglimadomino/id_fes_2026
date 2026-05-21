@@ -67,6 +67,107 @@ body {
   width: min(100%, 560px);
 }
 
+.admin-cms {
+  min-height: 100svh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  background: #f1f3f5;
+}
+
+.admin-sidebar {
+  background: #111a21;
+  color: #d9e2e8;
+  padding: 26px 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.admin-sidebar h1 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.2;
+}
+
+.admin-sidebar__meta {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: #9cb0bf;
+  word-break: break-word;
+}
+
+.admin-nav {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-nav__item {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(155, 176, 191, 0.16);
+  color: #e7eff5;
+  text-decoration: none;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-nav__item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.admin-nav__item.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #ffffff;
+}
+
+.admin-sidebar__bottom {
+  display: grid;
+  gap: 10px;
+}
+
+.admin-logout-btn {
+  width: 100%;
+  height: 44px;
+}
+
+.admin-content {
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+
+.admin-content h2 {
+  margin: 0 0 8px;
+}
+
+.admin-content h3 {
+  margin: 0 0 8px;
+}
+
+.admin-kpi-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.admin-kpi {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 800;
+}
+
+.admin-public-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
 h1, h2, h3, h4 { margin: 0 0 12px; }
 
 a { color: var(--accent); text-decoration: none; }
@@ -656,6 +757,24 @@ th, td {
   .admin-login-page {
     min-height: auto;
     padding-block: 28px 34px;
+  }
+
+  .admin-cms {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 18px 16px;
+  }
+
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-kpi-grid {
+    grid-template-columns: 1fr;
   }
 
   .site-header__inner {
