@@ -138,7 +138,8 @@ th, td {
 .main-nav {
   display: flex;
   gap: 18px;
-  overflow-x: auto;
+  overflow: visible;
+  align-items: center;
 }
 
 .main-nav a {
