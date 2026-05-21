@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getSuperAdminFromSession } from "@/lib/auth/admin-session";
 import { createAdminSupabaseClient } from "@/lib/supabase/admin-client";
 import CreateEventForm from "./create-event-form";
+import PublicPageCmsForm from "./public-page-cms-form";
 
 export const dynamic = "force-dynamic";
 
@@ -185,33 +186,9 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <>
             <section className="panel">
               <h2>Kelola Halaman Public</h2>
-              <p>Kontrol cepat untuk konten publik website.</p>
+              <p>Kelola konten halaman public melalui form CMS.</p>
             </section>
-
-            <section className="admin-public-grid">
-              <article className="panel">
-                <h3>Branding Assets</h3>
-                <p>Bucket: <code>idfes-assets</code></p>
-                <p>Logo header: <code>ID FES 2026 LOGO.png</code></p>
-                <p>Hero background: <code>ID FES HERO BACKROUND.jpg</code></p>
-              </article>
-
-              <article className="panel">
-                <h3>Navigasi Public</h3>
-                <p>Menu utama: Beranda, ID Fes 2026, Peraturan, Kontak.</p>
-                <p>Submenu event: Surabaya, DKI Jakarta.</p>
-              </article>
-
-              <article className="panel">
-                <h3>Aksi Cepat</h3>
-                <p>
-                  <Link href="/">Buka Homepage</Link>
-                </p>
-                <p>
-                  <Link href="/events/id-fes-2026-jakarta">Buka Halaman Event Jakarta</Link>
-                </p>
-              </article>
-            </section>
+            <PublicPageCmsForm />
           </>
         ) : null}
       </main>

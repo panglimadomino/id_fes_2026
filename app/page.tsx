@@ -1,10 +1,20 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
+import { createPublicSupabaseClient } from "@/lib/supabase/public-client";
+import { mergePublicPageContent, PublicPageContent } from "@/lib/public-page-content";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const supabase = createPublicSupabaseClient();
+  const { data } = await supabase
+    .from("public_page_content")
+    .select("content")
+    .eq("id", "home")
+    .maybeSingle();
+
+  const content = mergePublicPageContent((data?.content ?? null) as Partial<PublicPageContent> | null);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const heroImageUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent("ID FES HERO BACKROUND.jpg")}`
+    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent(content.hero_image_filename)}`
     : null;
 
   return (
@@ -28,20 +38,17 @@ export default function HomePage() {
       >
         <div className="hero__overlay" />
         <div className="hero__content">
-          <p className="hero__date">Coming Soon</p>
-          <h1 className="hero__title">Jakarta Domino Tournament (Seri 2)</h1>
-          <p className="hero__subtitle">Semarak HUT DKI Jakarta ke-499</p>
+          <p className="hero__date">{content.hero_badge}</p>
+          <h1 className="hero__title">{content.hero_title}</h1>
+          <p className="hero__subtitle">{content.hero_subtitle}</p>
           <div className="hero__cta hero__cta--text">
-            <p>Turnamen Domino Skala Nasional</p>
-            <p>Multi Category Tournament</p>
+            <p>{content.hero_line1}</p>
+            <p>{content.hero_line2}</p>
           </div>
-          <p className="hero__desc">
-            Saatnya para pecinta domino dari berbagai daerah bersaing dalam satu ajang kompetisi
-            bergengsi
-          </p>
+          <p className="hero__desc">{content.hero_desc}</p>
           <div className="hero__cta hero__cta--bottom">
-            <Link href="/events/id-fes-2026-jakarta" className="btn btn--light">
-              Daftar Sekarang
+            <Link href={content.hero_cta_href} className="btn btn--light">
+              {content.hero_cta_label}
             </Link>
           </div>
         </div>
