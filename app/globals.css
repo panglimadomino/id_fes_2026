@@ -197,13 +197,17 @@ th, td {
 
 .nav-dropdown__toggle {
   min-width: 22px;
-  height: auto;
+  height: 22px;
   border: 0;
   background: transparent;
   color: #1d2733;
   font: inherit;
   font-weight: 600;
   padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
   cursor: pointer;
   white-space: nowrap;
   opacity: 0.9;
@@ -214,12 +218,14 @@ th, td {
 }
 
 .nav-dropdown__caret {
+  display: block;
   width: 0;
   height: 0;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
   border-top: 7px solid #1d2733;
   transition: transform 0.2s ease;
+  transform-origin: center;
 }
 
 .nav-dropdown__caret--open {
