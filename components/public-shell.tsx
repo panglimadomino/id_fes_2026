@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 
 type TabKey = "home" | "events" | "rules" | "contact";
@@ -15,6 +16,8 @@ function navClass(tab: TabKey, activeTab?: TabKey) {
 }
 
 export function PublicShell({ children, activeTab }: PublicShellProps) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -40,6 +43,13 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
     window.addEventListener("hashchange", syncDropdownWithHash);
     return () => window.removeEventListener("hashchange", syncDropdownWithHash);
   }, []);
+
+  useEffect(() => {
+    const hash = window.location.hash || "";
+    if (!hash.includes("type=recovery")) return;
+    if (pathname === "/auth/recover") return;
+    router.replace(`/auth/recover${hash}`);
+  }, [pathname, router]);
 
   return (
     <div className="public-page">

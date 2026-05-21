@@ -63,6 +63,10 @@ body {
   width: min(100%, 560px);
 }
 
+.recover-card {
+  width: min(100%, 560px);
+}
+
 h1, h2, h3, h4 { margin: 0 0 12px; }
 
 a { color: var(--accent); text-decoration: none; }
