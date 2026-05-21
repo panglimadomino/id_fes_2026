@@ -84,7 +84,7 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
                 aria-label={matchesOpen ? "Tutup submenu ID Fes 2026" : "Buka submenu ID Fes 2026"}
                 onClick={() => setMatchesOpen((prev) => !prev)}
               >
-                <span aria-hidden="true">{matchesOpen ? "▴" : "▾"}</span>
+                <span aria-hidden="true">{matchesOpen ? "^" : "v"}</span>
               </button>
               <div className="nav-dropdown__menu">
                 <Link href="/events/id-fes-2026-surabaya" onClick={closeMenu}>
@@ -108,7 +108,7 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
         </div>
       </header>
 
-      {children}
+      <main className="public-main">{children}</main>
 
       <footer className="site-footer" id="contact">
         <div className="site-footer__inner">
@@ -176,3 +176,4 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
     </div>
   );
 }
+

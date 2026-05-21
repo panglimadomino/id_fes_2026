@@ -26,7 +26,17 @@ body {
 }
 
 .app-main {
-  min-height: 100vh;
+  min-height: 100svh;
+}
+
+.public-page {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+.public-main {
+  flex: 1 0 auto;
 }
 
 .page-wrap {
@@ -478,6 +488,7 @@ th, td {
 }
 
 .site-footer {
+  margin-top: auto;
   border-top: 1px solid rgba(17, 22, 28, 0.12);
   background:
     radial-gradient(circle at 85% 20%, rgba(17, 108, 99, 0.08), transparent 42%),
