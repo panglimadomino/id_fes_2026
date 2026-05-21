@@ -75,6 +75,9 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
             <Link href="/#contact" className={navClass("contact", activeTab)} onClick={closeMenu}>
               Kontak
             </Link>
+            <Link href="/admin/login" className="main-nav__login" onClick={closeMenu}>
+              Masuk
+            </Link>
           </nav>
         </div>
       </header>
