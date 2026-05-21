@@ -128,9 +128,11 @@ th, td {
 }
 
 .brand__logo {
-  width: 72px;
-  height: 72px;
+  width: 46px;
+  height: 46px;
   object-fit: contain;
+  transform: scale(1.45);
+  transform-origin: left center;
 }
 
 .sr-only {
