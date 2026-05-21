@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
 
 export default function HomePage() {
@@ -33,6 +34,9 @@ export default function HomePage() {
           <div className="hero__cta hero__cta--text">
             <p>Turnamen Domino Skala Nasional</p>
             <p>Multi Category Tournament</p>
+            <Link href="/events/id-fes-2026-jakarta" className="btn btn--light">
+              Daftar Sekarang
+            </Link>
           </div>
           <p className="hero__desc">
             Saatnya para pecinta domino dari berbagai daerah bersaing dalam satu ajang kompetisi
