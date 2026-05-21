@@ -506,7 +506,7 @@ th, td {
 
 .site-footer h3 {
   margin: 0 0 8px;
-  font-size: 36px;
+  font-size: 24px;
   line-height: 1;
   color: #15222d;
 }
@@ -514,13 +514,13 @@ th, td {
 .site-footer p {
   margin: 0 0 8px;
   color: #2a3844;
-  font-size: 24px;
+  font-size: 14px;
   line-height: 1.4;
 }
 
 .site-footer a {
   color: #0e6b63;
-  font-size: 24px;
+  font-size: 14px;
 }
 
 .site-footer a:hover {
@@ -528,8 +528,8 @@ th, td {
 }
 
 .footer-brand__logo {
-  width: 128px;
-  height: 128px;
+  width: 96px;
+  height: 96px;
   object-fit: contain;
   margin-bottom: 14px;
 }
@@ -660,17 +660,17 @@ th, td {
   }
 
   .footer-brand__logo {
-    width: 96px;
-    height: 96px;
+    width: 82px;
+    height: 82px;
   }
 
   .site-footer h3 {
-    font-size: 30px;
+    font-size: 22px;
   }
 
   .site-footer p,
   .site-footer a {
-    font-size: 20px;
+    font-size: 16px;
   }
 
   .hero {
