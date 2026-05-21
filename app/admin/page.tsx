@@ -12,17 +12,19 @@ type EventStats = {
   slug: string;
   name: string;
   status: string;
+  reg_open_at: string | null;
   reg_close_at: string | null;
 };
 
-type AdminView = "dashboard" | "create-event" | "public-page";
+type AdminView = "dashboard" | "public-page" | "event-create" | "event-agenda";
 
 type AdminPageProps = {
   searchParams: Promise<{ view?: string }>;
 };
 
 function normalizeView(value?: string): AdminView {
-  if (value === "create-event") return "create-event";
+  if (value === "create-event" || value === "event-create") return "event-create";
+  if (value === "event-agenda") return "event-agenda";
   if (value === "public-page") return "public-page";
   return "dashboard";
 }
@@ -50,7 +52,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
     const supabase = createAdminSupabaseClient();
     const { data: eventsData, error: eventError } = await supabase
       .from("events")
-      .select("id, slug, name, status, reg_close_at")
+      .select("id, slug, name, status, reg_open_at, reg_close_at")
       .order("created_at", { ascending: false })
       .returns<EventStats[]>();
 
@@ -83,6 +85,17 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const totalEvents = events.length;
   const totalPublished = events.filter((e) => e.status === "published").length;
   const totalRegistrations = Array.from(regCountByEvent.values()).reduce((sum, n) => sum + n, 0);
+  const isPertandinganView = view === "event-create" || view === "event-agenda";
+
+  function formatDateTime(value: string | null) {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return value;
+    return new Intl.DateTimeFormat("id-ID", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    }).format(date);
+  }
 
   return (
     <div className="admin-cms">
@@ -94,8 +107,24 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
 
         <nav className="admin-nav" aria-label="Menu Super Admin">
           {viewLink("dashboard", view, "Dashboard")}
-          {viewLink("create-event", view, "Buat Pertandingan")}
           {viewLink("public-page", view, "Kelola Halaman Public")}
+          <div className="admin-nav__group">
+            <div className={`admin-nav__group-title ${isPertandinganView ? "is-active" : ""}`}>Pertandingan</div>
+            <div className="admin-nav__sub">
+              <Link
+                href="/admin?view=event-create"
+                className={`admin-nav__subitem ${view === "event-create" ? "is-active" : ""}`}
+              >
+                Buat Pertandingan
+              </Link>
+              <Link
+                href="/admin?view=event-agenda"
+                className={`admin-nav__subitem ${view === "event-agenda" ? "is-active" : ""}`}
+              >
+                Agenda Pertandingan
+              </Link>
+            </div>
+          </div>
         </nav>
 
         <div className="admin-sidebar__bottom">
@@ -172,13 +201,57 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           </>
         ) : null}
 
-        {view === "create-event" ? (
+        {view === "event-create" ? (
           <>
             <section className="panel">
               <h2>Buat Pertandingan</h2>
               <p>CMS form untuk menambah event baru dari dashboard super admin.</p>
             </section>
             <CreateEventForm />
+          </>
+        ) : null}
+
+        {view === "event-agenda" ? (
+          <>
+            <section className="panel">
+              <h2>Agenda Pertandingan</h2>
+              <p>Daftar event beserta jadwal registrasi dan status publikasi.</p>
+            </section>
+
+            <section className="panel">
+              <div className="table-scroll">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Event</th>
+                      <th>Slug</th>
+                      <th>Status</th>
+                      <th>Buka Reg</th>
+                      <th>Tutup Reg</th>
+                      <th>Total Pendaftar</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {events.length === 0 ? (
+                      <tr>
+                        <td colSpan={6}>Belum ada agenda pertandingan.</td>
+                      </tr>
+                    ) : (
+                      events.map((e) => (
+                        <tr key={e.id}>
+                          <td>{e.name}</td>
+                          <td>{e.slug}</td>
+                          <td>{e.status}</td>
+                          <td>{formatDateTime(e.reg_open_at)}</td>
+                          <td>{formatDateTime(e.reg_close_at)}</td>
+                          <td>{regCountByEvent.get(e.id) ?? 0}</td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </section>
           </>
         ) : null}
 

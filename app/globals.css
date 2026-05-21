@@ -103,6 +103,50 @@ body {
   gap: 8px;
 }
 
+.admin-nav__group {
+  display: grid;
+  gap: 8px;
+}
+
+.admin-nav__group-title {
+  padding: 10px 14px 2px;
+  color: #a6bbc8;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.admin-nav__group-title.is-active {
+  color: #e7eff5;
+}
+
+.admin-nav__sub {
+  display: grid;
+  gap: 8px;
+  padding-left: 12px;
+}
+
+.admin-nav__subitem {
+  display: block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(155, 176, 191, 0.16);
+  color: #dce8f0;
+  text-decoration: none;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.admin-nav__subitem:hover {
+  background: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+}
+
+.admin-nav__subitem.is-active {
+  background: #0f766e;
+  border-color: #0f766e;
+  color: #ffffff;
+}
+
 .admin-nav__item {
   display: block;
   padding: 12px 14px;
