@@ -170,6 +170,37 @@ th, td {
   background: rgba(255, 255, 255, 0.16);
 }
 
+.menu-toggle {
+  display: none;
+  width: 42px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 8px;
+  background: transparent;
+}
+
+.menu-toggle span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  margin: 4px auto;
+  background: #f3f6fb;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.menu-toggle--open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.menu-toggle--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.menu-toggle--open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
 .hero {
   position: relative;
   width: 100%;
@@ -412,7 +443,7 @@ th, td {
 @media (max-width: 900px) {
   :root {
     --content-gutter: 16px;
-    --header-height: 132px;
+    --header-height: 88px;
   }
 
   .page-wrap {
@@ -420,13 +451,35 @@ th, td {
   }
 
   .site-header__inner {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .menu-toggle {
+    display: inline-block;
   }
 
   .main-nav {
+    display: none;
     width: 100%;
-    padding-bottom: 4px;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 0 4px;
+    overflow: visible;
+  }
+
+  .main-nav--open {
+    display: flex;
+  }
+
+  .main-nav a {
+    display: block;
+    padding: 6px 0;
+  }
+
+  .main-nav__login {
+    margin-left: 0;
+    width: fit-content;
   }
 
   .two-col,
@@ -450,7 +503,7 @@ th, td {
 
 @media (max-width: 640px) {
   :root {
-    --header-height: 146px;
+    --header-height: 88px;
   }
 
   .section {
