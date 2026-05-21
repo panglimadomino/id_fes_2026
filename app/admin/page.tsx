@@ -75,28 +75,30 @@ export default async function AdminPage() {
         </section>
 
         <section className="panel">
-          <table>
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Slug</th>
-                <th>Status</th>
-                <th>Reg Close</th>
-                <th>Total Pendaftar</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(events ?? []).map((e) => (
-                <tr key={e.id}>
-                  <td>{e.name}</td>
-                  <td>{e.slug}</td>
-                  <td>{e.status}</td>
-                  <td>{e.reg_close_at ?? "-"}</td>
-                  <td>{regCountByEvent.get(e.id) ?? 0}</td>
+          <div className="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Slug</th>
+                  <th>Status</th>
+                  <th>Reg Close</th>
+                  <th>Total Pendaftar</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {(events ?? []).map((e) => (
+                  <tr key={e.id}>
+                    <td>{e.name}</td>
+                    <td>{e.slug}</td>
+                    <td>{e.status}</td>
+                    <td>{e.reg_close_at ?? "-"}</td>
+                    <td>{regCountByEvent.get(e.id) ?? 0}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </section>
       </div>
     </div>
