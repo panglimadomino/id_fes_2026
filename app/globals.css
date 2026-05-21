@@ -297,12 +297,15 @@ th, td {
 .hero__content {
   position: relative;
   max-width: 900px;
+  color: #f5f8ff;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.55);
 }
 
 .hero__date {
   font-size: 32px;
   font-weight: 800;
   margin: 0 0 10px;
+  color: #f2f6ff;
 }
 
 .hero__title {
@@ -317,7 +320,8 @@ th, td {
   max-width: 680px;
   font-size: 21px;
   line-height: 1.5;
-  opacity: 0.96;
+  opacity: 1;
+  color: #edf3ff;
 }
 
 .hero__cta {

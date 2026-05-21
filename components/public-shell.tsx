@@ -62,14 +62,14 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
                 aria-expanded={matchesOpen}
                 onClick={() => setMatchesOpen((prev) => !prev)}
               >
-                Pertandingan
+                ID Fes 2026
               </button>
               <div className="nav-dropdown__menu">
                 <Link href="/events/id-fes-2026-surabaya" onClick={closeMenu}>
-                  Surabaya Domino Tournament
+                  Surabaya
                 </Link>
                 <Link href="/events/id-fes-2026-jakarta" onClick={closeMenu}>
-                  Jakarta Domino Tournament
+                  DKI Jakarta
                 </Link>
               </div>
             </div>
