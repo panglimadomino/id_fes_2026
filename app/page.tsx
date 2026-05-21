@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
 
 export default function HomePage() {
@@ -28,19 +27,17 @@ export default function HomePage() {
       >
         <div className="hero__overlay" />
         <div className="hero__content">
-          <p className="hero__date">22-25 Oktober 2026</p>
-          <h1 className="hero__title">Kota yang bertanding. Festival yang merayakan.</h1>
-          <p className="hero__desc">
-            Platform multi-event untuk pendaftaran, pairing, dan scoring pertandingan domino.
-          </p>
-          <div className="hero__cta">
-            <Link href="/events/id-fes-2026-jakarta" className="btn btn--light">
-              Daftar Sekarang
-            </Link>
-            <Link href="/admin" className="btn btn--ghost">
-              Dashboard Admin
-            </Link>
+          <p className="hero__date">Coming Soon</p>
+          <h1 className="hero__title">Jakarta Domino Tournament (Seri 2)</h1>
+          <p className="hero__subtitle">Semarak HUT DKI Jakarta ke-499</p>
+          <div className="hero__cta hero__cta--text">
+            <p>Turnamen Domino Skala Nasional</p>
+            <p>Multi Category Tournament</p>
           </div>
+          <p className="hero__desc">
+            Saatnya para pecinta domino dari berbagai daerah bersaing dalam satu ajang kompetisi
+            bergengsi
+          </p>
         </div>
       </section>
 

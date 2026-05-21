@@ -56,13 +56,21 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
               Beranda
             </Link>
             <div className={`nav-dropdown ${matchesOpen ? "nav-dropdown--open" : ""}`}>
-              <button
-                type="button"
-                className={`nav-dropdown__toggle ${activeTab === "events" ? "main-nav__active" : ""}`}
-                aria-expanded={matchesOpen}
-                onClick={() => setMatchesOpen((prev) => !prev)}
+              <Link
+                href="/#about"
+                className={`nav-dropdown__link ${activeTab === "events" ? "main-nav__active" : ""}`}
+                onClick={closeMenu}
               >
                 ID Fes 2026
+              </Link>
+              <button
+                type="button"
+                className="nav-dropdown__toggle"
+                aria-expanded={matchesOpen}
+                aria-label={matchesOpen ? "Tutup submenu ID Fes 2026" : "Buka submenu ID Fes 2026"}
+                onClick={() => setMatchesOpen((prev) => !prev)}
+              >
+                <span aria-hidden="true">{matchesOpen ? "▴" : "▾"}</span>
               </button>
               <div className="nav-dropdown__menu">
                 <Link href="/events/id-fes-2026-surabaya" onClick={closeMenu}>

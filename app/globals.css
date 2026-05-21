@@ -168,9 +168,25 @@ th, td {
 
 .nav-dropdown {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.nav-dropdown__link {
+  color: #1d2733;
+  text-decoration: none;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0.9;
+}
+
+.nav-dropdown__link:hover {
+  opacity: 1;
 }
 
 .nav-dropdown__toggle {
+  min-width: 22px;
   height: auto;
   border: 0;
   background: transparent;
@@ -324,12 +340,30 @@ th, td {
   color: #edf3ff;
 }
 
+.hero__subtitle {
+  margin: 14px 0 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+
 .hero__cta {
   margin-top: 30px;
   display: flex;
   justify-content: center;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.hero__cta--text {
+  margin-top: 22px;
+  display: grid;
+  gap: 6px;
+}
+
+.hero__cta--text p {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
 }
 
 .btn {
@@ -547,13 +581,22 @@ th, td {
   }
 
   .nav-dropdown,
-  .nav-dropdown__toggle {
+  .nav-dropdown__toggle,
+  .nav-dropdown__link {
     width: 100%;
     text-align: left;
   }
 
+  .nav-dropdown {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: center;
+  }
+
   .nav-dropdown__menu {
     position: static;
+    grid-column: 1 / -1;
     min-width: 100%;
     margin-top: 8px;
   }
@@ -574,6 +617,10 @@ th, td {
 
   .hero__date {
     font-size: 24px;
+  }
+
+  .hero__subtitle {
+    font-size: 22px;
   }
 
   .hero__desc,
@@ -601,6 +648,10 @@ th, td {
 
   .hero__date {
     font-size: 20px;
+  }
+
+  .hero__subtitle {
+    font-size: 18px;
   }
 
   .hero__desc {
