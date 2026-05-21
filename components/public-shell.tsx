@@ -100,12 +100,9 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
         <div className="site-footer__inner">
           <div className="footer-brand">
             {logoUrl ? <img className="footer-brand__logo" src={logoUrl} alt="ID Festival 2026 Logo" /> : null}
-            <h3>ID Festival 2026</h3>
-            <p>Indonesia Domino Festival - Jakarta 2026</p>
             <p>
-              Sekretariat:
-              <br />
-              Jakarta, Indonesia
+              Jl. Percetakan Negara No.158 NO.158, RT.1/RW.5, Rawasari, Kec. Cemp. Putih, Kota Jakarta Pusat,
+              Daerah Khusus Ibukota Jakarta 10520
             </p>
             <p>Email: panitia@idfestival2026.id</p>
           </div>
