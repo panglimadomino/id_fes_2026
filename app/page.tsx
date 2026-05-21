@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
 import { createPublicSupabaseClient } from "@/lib/supabase/public-client";
-import { mergePublicPageContent, PublicPageContent } from "@/lib/public-page-content";
+import { buildPublicAssetUrl, mergePublicPageContent, PublicPageContent } from "@/lib/public-page-content";
 
 export default async function HomePage() {
   const supabase = createPublicSupabaseClient();
@@ -13,9 +13,7 @@ export default async function HomePage() {
 
   const content = mergePublicPageContent((data?.content ?? null) as Partial<PublicPageContent> | null);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const heroImageUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent(content.hero_image_filename)}`
-    : null;
+  const heroImageUrl = buildPublicAssetUrl(supabaseUrl, content.hero_image_filename);
 
   return (
     <PublicShell activeTab="home">

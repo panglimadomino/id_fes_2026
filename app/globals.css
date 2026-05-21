@@ -190,6 +190,58 @@ a:hover { text-decoration: underline; }
   gap: 10px;
 }
 
+.cms-section {
+  border: 1px solid rgba(30, 42, 47, 0.12);
+  border-radius: 12px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.76);
+}
+
+.cms-section h4 {
+  margin: 0 0 8px;
+  font-size: 20px;
+}
+
+.cms-section p {
+  margin: 0 0 10px;
+  color: #4f5e67;
+  font-size: 14px;
+}
+
+.cms-section__grid {
+  display: grid;
+  gap: 10px;
+}
+
+.cms-asset-row {
+  display: grid;
+  gap: 10px;
+}
+
+.cms-upload-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.cms-file-input {
+  display: none;
+}
+
+.cms-upload-btn {
+  height: 38px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(24, 32, 45, 0.22);
+  background: #f4f7f8;
+  color: #1f2a33;
+  font-weight: 700;
+}
+
+.cms-upload-btn:hover {
+  background: #e6edf0;
+}
+
 label {
   display: grid;
   gap: 6px;

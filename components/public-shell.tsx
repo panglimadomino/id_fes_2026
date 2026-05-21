@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@supabase/supabase-js";
 import { ReactNode, useEffect, useState } from "react";
-import { DEFAULT_PUBLIC_PAGE_CONTENT, PublicPageContent, mergePublicPageContent } from "@/lib/public-page-content";
+import { buildPublicAssetUrl, DEFAULT_PUBLIC_PAGE_CONTENT, PublicPageContent, mergePublicPageContent } from "@/lib/public-page-content";
 
 type TabKey = "home" | "events" | "rules" | "contact";
 
@@ -25,9 +25,7 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
   const [content, setContent] = useState<PublicPageContent>(DEFAULT_PUBLIC_PAGE_CONTENT);
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const logoUrl = supabaseUrl
-    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent(content.logo_filename)}`
-    : null;
+  const logoUrl = buildPublicAssetUrl(supabaseUrl, content.logo_filename);
 
   function closeMenu() {
     setMenuOpen(false);

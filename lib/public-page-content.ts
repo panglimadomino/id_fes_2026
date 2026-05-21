@@ -55,3 +55,15 @@ export function mergePublicPageContent(input?: Partial<PublicPageContent> | null
     ...input,
   };
 }
+
+export function buildPublicAssetUrl(supabaseUrl: string | undefined, objectPath: string): string | null {
+  if (!supabaseUrl) return null;
+  const normalized = objectPath.trim().replace(/^\/+/, "");
+  if (!normalized) return null;
+  const encodedPath = normalized
+    .split("/")
+    .filter(Boolean)
+    .map((part) => encodeURIComponent(part))
+    .join("/");
+  return `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodedPath}`;
+}
