@@ -33,10 +33,7 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
         <div className="site-header__inner">
           <Link className="brand" href="/" onClick={closeMenu}>
             {logoUrl ? <img className="brand__logo" src={logoUrl} alt="ID Festival 2026 Logo" /> : null}
-            <span className="brand__meta">
-              <span className="brand__title">ID Festival 2026</span>
-              <span className="brand__sub">Indonesia Domino Festival</span>
-            </span>
+            <span className="sr-only">ID Festival 2026</span>
           </Link>
           <button
             type="button"
