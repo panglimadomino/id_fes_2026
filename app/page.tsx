@@ -2,9 +2,30 @@ import Link from "next/link";
 import { PublicShell } from "@/components/public-shell";
 
 export default function HomePage() {
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const heroImageUrl = supabaseUrl
+    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent("ID FES HERO BACKROUND.jpg")}`
+    : null;
+
   return (
     <PublicShell activeTab="home">
-      <section className="hero">
+      <section
+        className="hero"
+        style={
+          heroImageUrl
+            ? {
+                backgroundImage: `
+                  radial-gradient(circle at 80% 20%, rgba(255, 213, 128, 0.22), transparent 45%),
+                  radial-gradient(circle at 20% 20%, rgba(120, 198, 255, 0.22), transparent 42%),
+                  linear-gradient(180deg, rgba(26, 30, 36, 0.7) 0%, rgba(15, 17, 20, 0.7) 100%),
+                  url("${heroImageUrl}")
+                `,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }
+            : undefined
+        }
+      >
         <div className="hero__overlay" />
         <div className="hero__content">
           <p className="hero__date">22-25 Oktober 2026</p>

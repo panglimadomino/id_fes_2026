@@ -17,6 +17,10 @@ function navClass(tab: TabKey, activeTab?: TabKey) {
 export function PublicShell({ children, activeTab }: PublicShellProps) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [matchesOpen, setMatchesOpen] = useState(false);
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const logoUrl = supabaseUrl
+    ? `${supabaseUrl}/storage/v1/object/public/idfes-assets/${encodeURIComponent("ID FES 2026 LOGO.png")}`
+    : null;
 
   function closeMenu() {
     setMenuOpen(false);
@@ -28,8 +32,11 @@ export function PublicShell({ children, activeTab }: PublicShellProps) {
       <header className="site-header">
         <div className="site-header__inner">
           <Link className="brand" href="/" onClick={closeMenu}>
-            <span className="brand__title">ID Festival 2026</span>
-            <span className="brand__sub">Indonesia Domino Festival</span>
+            {logoUrl ? <img className="brand__logo" src={logoUrl} alt="ID Festival 2026 Logo" /> : null}
+            <span className="brand__meta">
+              <span className="brand__title">ID Festival 2026</span>
+              <span className="brand__sub">Indonesia Domino Festival</span>
+            </span>
           </Link>
           <button
             type="button"

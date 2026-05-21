@@ -120,9 +120,21 @@ th, td {
 }
 
 .brand {
-  display: grid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   text-decoration: none;
   color: #ffffff;
+}
+
+.brand__logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.brand__meta {
+  display: grid;
 }
 
 .brand__title {
