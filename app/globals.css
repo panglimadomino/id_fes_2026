@@ -371,6 +371,10 @@ th, td {
   margin-top: 10px;
 }
 
+.hero__cta--bottom {
+  margin-top: 26px;
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
