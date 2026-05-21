@@ -45,6 +45,24 @@ body {
   padding: 24px;
 }
 
+.admin-login-page {
+  width: min(var(--content-max), var(--content-width));
+  min-height: clamp(420px, 56vh, 620px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: 42px 54px;
+}
+
+.admin-login-page .grid {
+  width: 100%;
+  justify-items: center;
+}
+
+.admin-login-card {
+  width: min(100%, 560px);
+}
+
 h1, h2, h3, h4 { margin: 0 0 12px; }
 
 a { color: var(--accent); text-decoration: none; }
@@ -629,6 +647,11 @@ th, td {
 
   .page-wrap {
     padding: 16px;
+  }
+
+  .admin-login-page {
+    min-height: auto;
+    padding-block: 28px 34px;
   }
 
   .site-header__inner {

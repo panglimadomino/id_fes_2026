@@ -11,9 +11,9 @@ export default async function AdminLoginPage() {
 
   return (
     <PublicShell>
-      <div className="page-wrap">
+      <div className="page-wrap admin-login-page">
         <div className="grid">
-          <section className="panel" style={{ maxWidth: 520 }}>
+          <section className="panel admin-login-card">
             <h1>Masuk Super Admin</h1>
             <p>Masukkan email dan kata sandi untuk membuka dashboard admin.</p>
             <AdminLoginForm />
