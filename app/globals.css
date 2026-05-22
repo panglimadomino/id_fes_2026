@@ -279,6 +279,15 @@ a:hover { text-decoration: underline; }
   gap: 10px;
 }
 
+.cms-asset-row > span {
+  font-size: 14px;
+}
+
+.cms-asset-row small {
+  color: #4f5e67;
+  font-size: 12px;
+}
+
 .cms-upload-actions {
   display: flex;
   gap: 10px;
@@ -290,6 +299,9 @@ a:hover { text-decoration: underline; }
 }
 
 .cms-upload-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   height: 38px;
   padding: 0 14px;
   border-radius: 10px;
@@ -297,10 +309,19 @@ a:hover { text-decoration: underline; }
   background: #f4f7f8;
   color: #1f2a33;
   font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .cms-upload-btn:hover {
   background: #e6edf0;
+  text-decoration: none;
+}
+
+.cms-upload-actions span {
+  color: #2f3e47;
+  font-size: 13px;
+  word-break: break-all;
 }
 
 label {
