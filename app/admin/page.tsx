@@ -19,7 +19,7 @@ type EventStats = {
 type AdminView = "dashboard" | "public-page" | "event-create" | "event-agenda";
 
 type AdminPageProps = {
-  searchParams: Promise<{ view?: string }>;
+  searchParams: Promise<{ view?: string; slug?: string }>;
 };
 
 function normalizeView(value?: string): AdminView {
@@ -40,6 +40,7 @@ function viewLink(target: AdminView, active: AdminView, label: string) {
 export default async function AdminPage({ searchParams }: AdminPageProps) {
   const params = await searchParams;
   const view = normalizeView(params.view);
+  const editSlug = typeof params.slug === "string" ? params.slug : "";
 
   const admin = await getSuperAdminFromSession();
   if (!admin) redirect("/admin/login");
@@ -204,10 +205,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         {view === "event-create" ? (
           <>
             <section className="panel">
-              <h2>Buat Pertandingan</h2>
-              <p>CMS form untuk menambah event baru dari dashboard super admin.</p>
+              <h2>{editSlug ? "Edit Pertandingan" : "Buat Pertandingan"}</h2>
+              <p>
+                {editSlug
+                  ? `Ubah data pertandingan dengan slug: ${editSlug}`
+                  : "CMS form untuk menambah event baru dari dashboard super admin."}
+              </p>
             </section>
-            <CreateEventForm />
+            <CreateEventForm initialSlug={editSlug} />
           </>
         ) : null}
 
@@ -229,12 +234,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                       <th>Buka Reg</th>
                       <th>Tutup Reg</th>
                       <th>Total Pendaftar</th>
+                      <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody>
                     {events.length === 0 ? (
                       <tr>
-                        <td colSpan={6}>Belum ada agenda pertandingan.</td>
+                        <td colSpan={7}>Belum ada agenda pertandingan.</td>
                       </tr>
                     ) : (
                       events.map((e) => (
@@ -245,6 +251,14 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                           <td>{formatDateTime(e.reg_open_at)}</td>
                           <td>{formatDateTime(e.reg_close_at)}</td>
                           <td>{regCountByEvent.get(e.id) ?? 0}</td>
+                          <td>
+                            <Link
+                              href={`/admin?view=event-create&slug=${encodeURIComponent(e.slug)}`}
+                              className="admin-table-action"
+                            >
+                              Edit
+                            </Link>
+                          </td>
                         </tr>
                       ))
                     )}

@@ -6,12 +6,87 @@ type CreateEventResponse = {
   ok?: boolean;
   error?: string;
   id?: string;
+  action?: "created" | "updated";
+  slug?: string;
 };
 
 type UploadResponse = {
   ok?: boolean;
   error?: string;
   path?: string;
+};
+
+type EventFetchResponse = {
+  ok?: boolean;
+  error?: string;
+  event?: {
+    id: string;
+    slug: string;
+    name: string;
+    description: string | null;
+    status: "draft" | "published" | "archived";
+    capacity_total: number;
+    reg_open_at: string | null;
+    reg_close_at: string | null;
+    match_start_at: string | null;
+    tournament_end_at: string | null;
+    allow_public_registration: boolean;
+    allow_public_live_report: boolean;
+  };
+  settings?: {
+    identity?: {
+      tingkatan_pertandingan?: string | null;
+      penyelenggara_pertandingan?: string | null;
+      provinsi_id?: string | null;
+      kabupaten_kota_id?: string | null;
+      tanggal_mulai_pertandingan?: string | null;
+      tanggal_berakhir_pertandingan?: string | null;
+      alamat_tempat_pertandingan?: string | null;
+      link_map_lokasi_pertandingan?: string | null;
+    };
+    kategori?: {
+      nomor_pertandingan?: string | null;
+      jumlah_peserta?: number | null;
+      jumlah_babak?: string;
+      sistem_babak_pertama?: string | null;
+    };
+    hadiah?: Record<string, string | null | undefined>;
+    pendaftaran?: {
+      tanggal_dibuka_pendaftaran?: string | null;
+      tanggal_ditutup_pendaftaran?: string | null;
+      biaya_pendaftaran?: string | null;
+    };
+    dokumen?: Record<string, string | null | undefined>;
+  };
+  profile?: {
+    tournament_level: string;
+    organizer_level: string;
+    province: string | null;
+    city: string | null;
+    venue_address: string | null;
+    venue_map_url: string | null;
+    event_start_at: string | null;
+    event_end_at: string | null;
+    event_number_category: string;
+    participant_total: number;
+    round_count: number;
+    round_one_system: string;
+    registration_open_at: string | null;
+    registration_close_at: string | null;
+    registration_fee: number | null;
+    prize_1: number | null;
+    prize_2: number | null;
+    prize_3: number | null;
+    prize_4: number | null;
+    prize_5_8: number | null;
+    prize_9_16: number | null;
+    prize_17_32: number | null;
+  } | null;
+  documents?: Array<{ doc_type: UploadTarget; storage_path: string }>;
+};
+
+type CreateEventFormProps = {
+  initialSlug?: string;
 };
 
 type RegionItem = {
@@ -102,6 +177,19 @@ function extractDigits(value: string) {
   return value.replace(/\D/g, "");
 }
 
+function toDateTimeLocalValue(value?: string | null) {
+  if (!value) return "";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "";
+  const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+  return localDate.toISOString().slice(0, 16);
+}
+
+function numberToDigitString(value?: number | null) {
+  if (value === null || value === undefined || Number.isNaN(value)) return "";
+  return String(Math.max(0, Math.floor(value)));
+}
+
 function formatRupiah(rawDigits: string) {
   if (!rawDigits) return "";
   const numeric = Number(rawDigits);
@@ -131,8 +219,9 @@ function readFileToDigits(setter: (value: string) => void) {
   };
 }
 
-export default function CreateEventForm() {
+export default function CreateEventForm({ initialSlug }: CreateEventFormProps) {
   const [name, setName] = useState("");
+  const [status, setStatus] = useState<"draft" | "published" | "archived">("draft");
   const [tournamentLevel, setTournamentLevel] = useState(TOURNAMENT_LEVEL_OPTIONS[0]);
   const [organizer, setOrganizer] = useState(ORGANIZER_OPTIONS[0]);
   const [provinceId, setProvinceId] = useState("");
@@ -170,7 +259,11 @@ export default function CreateEventForm() {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isError, setIsError] = useState(false);
+  const [loadingEdit, setLoadingEdit] = useState(false);
+  const [allowPublicRegistration, setAllowPublicRegistration] = useState(true);
+  const [allowPublicLiveReport, setAllowPublicLiveReport] = useState(true);
 
+  const isEditMode = Boolean(initialSlug?.trim());
   const showProvince = organizer === "PENGPROV PORDI" || organizer === "PENGKAB/PENGKOT PORDI";
   const showCity = organizer === "PENGKAB/PENGKOT PORDI";
   const showRoundTwo = roundCount === "Dua Babak";
@@ -232,7 +325,10 @@ export default function CreateEventForm() {
         }
         if (isMounted) {
           setCities(Array.isArray(data) ? data : []);
-          setCityId("");
+          setCityId((prev) => {
+            if (!prev) return "";
+            return (Array.isArray(data) ? data : []).some((item) => item.id === prev) ? prev : "";
+          });
         }
       } catch {
         if (isMounted) {
@@ -251,6 +347,123 @@ export default function CreateEventForm() {
       isMounted = false;
     };
   }, [provinceId]);
+
+  useEffect(() => {
+    const slugForEdit = initialSlug ?? "";
+    if (!isEditMode || !slugForEdit) return;
+    let isMounted = true;
+
+    async function loadEventForEdit() {
+      setLoadingEdit(true);
+      setMessage(null);
+      setIsError(false);
+
+      try {
+        const response = await fetch(`/api/admin/events?slug=${encodeURIComponent(slugForEdit)}`, {
+          cache: "no-store",
+        });
+        const data = (await response.json().catch(() => ({}))) as EventFetchResponse;
+
+        if (!response.ok || !data.ok || !data.event) {
+          throw new Error(data.error ?? "Gagal memuat data pertandingan untuk mode edit.");
+        }
+
+        if (!isMounted) return;
+
+        const event = data.event;
+        const settings = data.settings ?? {};
+        const profile = data.profile;
+        const identity = settings.identity ?? {};
+        const kategori = settings.kategori ?? {};
+        const hadiah = settings.hadiah ?? {};
+        const pendaftaran = settings.pendaftaran ?? {};
+        const dokumen = settings.dokumen ?? {};
+
+        const docsFromRows: Record<UploadTarget, string> = { ...DEFAULT_DOCS };
+        for (const row of data.documents ?? []) {
+          docsFromRows[row.doc_type] = row.storage_path;
+        }
+
+        setName(event.name ?? "");
+        setStatus(event.status ?? "draft");
+        setAllowPublicRegistration(event.allow_public_registration ?? true);
+        setAllowPublicLiveReport(event.allow_public_live_report ?? true);
+
+        setTournamentLevel(
+          profile?.tournament_level ??
+            identity.tingkatan_pertandingan ??
+            TOURNAMENT_LEVEL_OPTIONS[0],
+        );
+        setOrganizer(
+          profile?.organizer_level ??
+            identity.penyelenggara_pertandingan ??
+            ORGANIZER_OPTIONS[0],
+        );
+        setProvinceId(identity.provinsi_id ?? "");
+        setCityId(identity.kabupaten_kota_id ?? "");
+        setEventStartAt(
+          toDateTimeLocalValue(profile?.event_start_at ?? event.match_start_at ?? identity.tanggal_mulai_pertandingan),
+        );
+        setEventEndAt(
+          toDateTimeLocalValue(profile?.event_end_at ?? event.tournament_end_at ?? identity.tanggal_berakhir_pertandingan),
+        );
+        setVenueAddress(profile?.venue_address ?? identity.alamat_tempat_pertandingan ?? "");
+        setVenueMapUrl(profile?.venue_map_url ?? identity.link_map_lokasi_pertandingan ?? "");
+
+        setEventNumberCategory(
+          profile?.event_number_category ?? kategori.nomor_pertandingan ?? EVENT_NUMBER_OPTIONS[0],
+        );
+        setCapacityTotal(profile?.participant_total ?? event.capacity_total ?? kategori.jumlah_peserta ?? 0);
+        setRoundCount(
+          profile?.round_count === 2 || kategori.jumlah_babak === "Dua Babak" ? "Dua Babak" : "Satu Babak",
+        );
+        setSystemRoundOne(profile?.round_one_system ?? kategori.sistem_babak_pertama ?? FIRST_ROUND_SYSTEM_OPTIONS[0]);
+
+        setPrizeFirst(numberToDigitString(profile?.prize_1) || extractDigits(hadiah.juara_i ?? ""));
+        setPrizeSecond(numberToDigitString(profile?.prize_2) || extractDigits(hadiah.juara_ii ?? ""));
+        setPrizeThird(numberToDigitString(profile?.prize_3) || extractDigits(hadiah.juara_iii ?? ""));
+        setPrizeFourth(numberToDigitString(profile?.prize_4) || extractDigits(hadiah.juara_iv ?? ""));
+        setPrizeFiveToEight(numberToDigitString(profile?.prize_5_8) || extractDigits(hadiah.juara_v_viii ?? ""));
+        setPrizeNineToSixteen(numberToDigitString(profile?.prize_9_16) || extractDigits(hadiah.juara_ix_xvi ?? ""));
+        setPrizeSeventeenToThirtyTwo(
+          numberToDigitString(profile?.prize_17_32) || extractDigits(hadiah.juara_xvii_xxxii ?? ""),
+        );
+
+        setRegOpenAt(
+          toDateTimeLocalValue(profile?.registration_open_at ?? event.reg_open_at ?? pendaftaran.tanggal_dibuka_pendaftaran),
+        );
+        setRegCloseAt(
+          toDateTimeLocalValue(profile?.registration_close_at ?? event.reg_close_at ?? pendaftaran.tanggal_ditutup_pendaftaran),
+        );
+        setRegistrationFee(
+          numberToDigitString(profile?.registration_fee) || extractDigits(pendaftaran.biaya_pendaftaran ?? ""),
+        );
+
+        setDocs({
+          org_recommendation: dokumen.surat_rekomendasi_organisasi ?? docsFromRows.org_recommendation ?? "",
+          public_permit: dokumen.surat_izin_keramaian ?? docsFromRows.public_permit ?? "",
+          flyer_16_9_1: dokumen.flayer_1_16_9 ?? docsFromRows.flyer_16_9_1 ?? "",
+          flyer_16_9_2: dokumen.flayer_2_16_9 ?? docsFromRows.flyer_16_9_2 ?? "",
+          flyer_9_16_1: dokumen.flayer_3_9_16 ?? docsFromRows.flyer_9_16_1 ?? "",
+          flyer_9_16_2: dokumen.flayer_4_9_16 ?? docsFromRows.flyer_9_16_2 ?? "",
+        });
+      } catch (error) {
+        if (!isMounted) return;
+        setIsError(true);
+        setMessage(error instanceof Error ? error.message : "Gagal memuat data edit pertandingan.");
+      } finally {
+        if (isMounted) {
+          setLoadingEdit(false);
+        }
+      }
+    }
+
+    void loadEventForEdit();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [initialSlug, isEditMode]);
 
   async function uploadDocument(target: UploadTarget, file: File) {
     setUploadingDoc(target);
@@ -298,15 +511,17 @@ export default function CreateEventForm() {
 
     try {
       const payload = {
+        slug: isEditMode && initialSlug ? initialSlug : slugPreview,
         name,
         description: `${name}${organizer ? ` - Penyelenggara: ${organizer}` : ""}`,
+        status,
         capacity_total: capacityTotal,
         match_start_at: eventStartAt || null,
         tournament_end_at: eventEndAt || null,
         reg_open_at: regOpenAt || null,
         reg_close_at: regCloseAt || null,
-        allow_public_registration: true,
-        allow_public_live_report: true,
+        allow_public_registration: allowPublicRegistration,
+        allow_public_live_report: allowPublicLiveReport,
         meta: {
           identity: {
             nama_pertandingan: name,
@@ -366,31 +581,43 @@ export default function CreateEventForm() {
         return;
       }
 
-      setMessage(`Pertandingan berhasil dibuat. Slug: ${slugPreview || "-"}`);
-      setName("");
-      setTournamentLevel(TOURNAMENT_LEVEL_OPTIONS[0]);
-      setOrganizer(ORGANIZER_OPTIONS[0]);
-      setProvinceId("");
-      setCityId("");
-      setEventStartAt("");
-      setEventEndAt("");
-      setVenueAddress("");
-      setVenueMapUrl("");
-      setEventNumberCategory(EVENT_NUMBER_OPTIONS[0]);
-      setCapacityTotal(0);
-      setRoundCount(ROUND_COUNT_OPTIONS[0]);
-      setSystemRoundOne(FIRST_ROUND_SYSTEM_OPTIONS[0]);
-      setPrizeFirst("");
-      setPrizeSecond("");
-      setPrizeThird("");
-      setPrizeFourth("");
-      setPrizeFiveToEight("");
-      setPrizeNineToSixteen("");
-      setPrizeSeventeenToThirtyTwo("");
-      setRegOpenAt("");
-      setRegCloseAt("");
-      setRegistrationFee("");
-      setDocs(DEFAULT_DOCS);
+      const savedSlug = data.slug || slugPreview || "-";
+      const isUpdated = data.action === "updated";
+      setMessage(
+        isUpdated
+          ? `Pertandingan berhasil diupdate. Slug: ${savedSlug}`
+          : `Pertandingan berhasil dibuat. Slug: ${savedSlug}`,
+      );
+
+      if (!isUpdated) {
+        setName("");
+        setStatus("draft");
+        setAllowPublicRegistration(true);
+        setAllowPublicLiveReport(true);
+        setTournamentLevel(TOURNAMENT_LEVEL_OPTIONS[0]);
+        setOrganizer(ORGANIZER_OPTIONS[0]);
+        setProvinceId("");
+        setCityId("");
+        setEventStartAt("");
+        setEventEndAt("");
+        setVenueAddress("");
+        setVenueMapUrl("");
+        setEventNumberCategory(EVENT_NUMBER_OPTIONS[0]);
+        setCapacityTotal(0);
+        setRoundCount(ROUND_COUNT_OPTIONS[0]);
+        setSystemRoundOne(FIRST_ROUND_SYSTEM_OPTIONS[0]);
+        setPrizeFirst("");
+        setPrizeSecond("");
+        setPrizeThird("");
+        setPrizeFourth("");
+        setPrizeFiveToEight("");
+        setPrizeNineToSixteen("");
+        setPrizeSeventeenToThirtyTwo("");
+        setRegOpenAt("");
+        setRegCloseAt("");
+        setRegistrationFee("");
+        setDocs(DEFAULT_DOCS);
+      }
     } finally {
       setSaving(false);
     }
