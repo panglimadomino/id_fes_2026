@@ -87,7 +87,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const totalEvents = events.length;
   const totalPublished = events.filter((e) => e.status === "published").length;
   const totalRegistrations = Array.from(regCountByEvent.values()).reduce((sum, n) => sum + n, 0);
-  const isPertandinganView = view === "event-create" || view === "event-agenda" || view === "event-dashboard";
+  const isEventView = view === "event-create" || view === "event-agenda" || view === "event-dashboard";
   const selectedEvent = editSlug ? events.find((e) => e.slug === editSlug) ?? null : null;
 
   function formatDateTime(value: string | null) {
@@ -117,19 +117,19 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           {viewLink("dashboard", view, "Dashboard")}
           {viewLink("public-page", view, "Kelola Halaman Public")}
           <div className="admin-nav__group">
-            <div className={`admin-nav__group-title ${isPertandinganView ? "is-active" : ""}`}>Pertandingan</div>
+            <div className={`admin-nav__group-title ${isEventView ? "is-active" : ""}`}>Event</div>
             <div className="admin-nav__sub">
               <Link
                 href="/admin?view=event-create"
                 className={`admin-nav__subitem ${view === "event-create" ? "is-active" : ""}`}
               >
-                Buat Pertandingan
+                Buat Event
               </Link>
               <Link
                 href="/admin?view=event-agenda"
                 className={`admin-nav__subitem ${view === "event-agenda" || view === "event-dashboard" ? "is-active" : ""}`}
               >
-                Agenda Pertandingan
+                Agenda Event
               </Link>
             </div>
           </div>
@@ -212,11 +212,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         {view === "event-create" ? (
           <>
             <section className="panel">
-              <h2>{editSlug ? "Edit Pertandingan" : "Buat Pertandingan"}</h2>
+              <h2>{editSlug ? "Edit Event" : "Buat Event"}</h2>
               <p>
                 {editSlug
-                  ? `Ubah data pertandingan dengan slug: ${editSlug}`
-                  : "CMS form untuk menambah event baru dari dashboard super admin."}
+                  ? `Ubah data event dengan slug: ${editSlug}`
+                  : "Form untuk membuat event dan detail pertandingan di dalam event tersebut."}
               </p>
             </section>
             <CreateEventForm initialSlug={editSlug} />
@@ -226,13 +226,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
         {view === "event-agenda" ? (
           <>
             <section className="panel">
-              <h2>Agenda Pertandingan</h2>
-              <p>Pilih event untuk edit data pertandingan atau masuk ke dashboard event.</p>
+              <h2>Agenda Event</h2>
+              <p>Pilih event untuk edit detail event atau masuk ke dashboard event.</p>
             </section>
 
             <section className="panel">
               {events.length === 0 ? (
-                <p>Belum ada agenda pertandingan.</p>
+                <p>Belum ada agenda event.</p>
               ) : (
                 <div className="admin-event-grid">
                   {events.map((e) => (
@@ -280,7 +280,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                   Event: <strong>{selectedEvent.name}</strong> ({selectedEvent.slug})
                 </p>
               ) : (
-                <p>Pilih event dari Agenda Pertandingan untuk membuka dashboard event.</p>
+                <p>Pilih event dari Agenda Event untuk membuka dashboard event.</p>
               )}
             </section>
 
@@ -304,13 +304,13 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
                 <section className="admin-event-grid">
                   <article className="admin-event-card">
                     <h3>Kelola Event</h3>
-                    <p>Edit identitas event dan detail pertandingan.</p>
+                    <p>Edit identitas event dan detail pertandingan di dalam event.</p>
                     <div className="admin-event-card__actions">
                       <Link
                         href={`/admin?view=event-create&slug=${encodeURIComponent(selectedEvent.slug)}`}
                         className="admin-btn-link"
                       >
-                        Edit Pertandingan
+                        Edit Event
                       </Link>
                     </div>
                   </article>
@@ -335,7 +335,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
             ) : (
               <section className="panel">
                 <Link href="/admin?view=event-agenda" className="admin-btn-link">
-                  Kembali ke Agenda Pertandingan
+                  Kembali ke Agenda Event
                 </Link>
               </section>
             )}
