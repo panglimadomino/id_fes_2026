@@ -207,10 +207,131 @@ body {
   font-weight: 800;
 }
 
+.admin-kpi--text {
+  font-size: 18px;
+  line-height: 1.4;
+  text-transform: capitalize;
+}
+
 .admin-public-grid {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.admin-event-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.admin-event-card {
+  border: 1px solid rgba(30, 42, 47, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.admin-event-card h3 {
+  margin: 0;
+}
+
+.admin-event-card p {
+  margin: 0;
+}
+
+.admin-event-card__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-event-card__slug {
+  font-size: 13px;
+  color: #4f5e67;
+  word-break: break-word;
+}
+
+.admin-event-card__meta {
+  display: grid;
+  gap: 6px;
+  font-size: 14px;
+  color: #2d3b44;
+}
+
+.admin-event-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.admin-btn-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid #0f766e;
+  background: #0f766e;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.admin-btn-link:hover {
+  background: #0d655e;
+  text-decoration: none;
+}
+
+.admin-btn-link.is-secondary {
+  background: transparent;
+  color: #14535f;
+  border-color: rgba(15, 118, 110, 0.35);
+}
+
+.admin-btn-link.is-secondary:hover {
+  background: rgba(15, 118, 110, 0.09);
+}
+
+.admin-btn-link.is-disabled {
+  border-color: rgba(30, 42, 47, 0.25);
+  color: #52636f;
+  background: rgba(30, 42, 47, 0.06);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.admin-status-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: capitalize;
+  background: rgba(71, 85, 105, 0.15);
+  color: #374151;
+}
+
+.admin-status-chip.is-published {
+  background: rgba(16, 185, 129, 0.2);
+  color: #066c45;
+}
+
+.admin-status-chip.is-draft {
+  background: rgba(245, 158, 11, 0.2);
+  color: #8a5300;
+}
+
+.admin-status-chip.is-active {
+  background: rgba(59, 130, 246, 0.2);
+  color: #0f4aa8;
 }
 
 h1, h2, h3, h4 { margin: 0 0 12px; }

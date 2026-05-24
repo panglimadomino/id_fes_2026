@@ -16,7 +16,7 @@ type EventStats = {
   reg_close_at: string | null;
 };
 
-type AdminView = "dashboard" | "public-page" | "event-create" | "event-agenda";
+type AdminView = "dashboard" | "public-page" | "event-create" | "event-agenda" | "event-dashboard";
 
 type AdminPageProps = {
   searchParams: Promise<{ view?: string; slug?: string }>;
@@ -25,6 +25,7 @@ type AdminPageProps = {
 function normalizeView(value?: string): AdminView {
   if (value === "create-event" || value === "event-create") return "event-create";
   if (value === "event-agenda") return "event-agenda";
+  if (value === "event-dashboard") return "event-dashboard";
   if (value === "public-page") return "public-page";
   return "dashboard";
 }
@@ -87,6 +88,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const totalPublished = events.filter((e) => e.status === "published").length;
   const totalRegistrations = Array.from(regCountByEvent.values()).reduce((sum, n) => sum + n, 0);
   const isPertandinganView = view === "event-create" || view === "event-agenda";
+  const selectedEvent = editSlug ? events.find((e) => e.slug === editSlug) ?? null : null;
 
   function formatDateTime(value: string | null) {
     if (!value) return "-";
@@ -96,6 +98,11 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
       dateStyle: "medium",
       timeStyle: "short",
     }).format(date);
+  }
+
+  function formatStatusLabel(status: string) {
+    if (!status) return "unknown";
+    return status.replaceAll("_", " ");
   }
 
   return (
@@ -220,52 +227,118 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
           <>
             <section className="panel">
               <h2>Agenda Pertandingan</h2>
-              <p>Daftar event beserta jadwal registrasi dan status publikasi.</p>
+              <p>Pilih event untuk edit data pertandingan atau masuk ke dashboard event.</p>
             </section>
 
             <section className="panel">
-              <div className="table-scroll">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Event</th>
-                      <th>Slug</th>
-                      <th>Status</th>
-                      <th>Buka Reg</th>
-                      <th>Tutup Reg</th>
-                      <th>Total Pendaftar</th>
-                      <th>Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {events.length === 0 ? (
-                      <tr>
-                        <td colSpan={7}>Belum ada agenda pertandingan.</td>
-                      </tr>
-                    ) : (
-                      events.map((e) => (
-                        <tr key={e.id}>
-                          <td>{e.name}</td>
-                          <td>{e.slug}</td>
-                          <td>{e.status}</td>
-                          <td>{formatDateTime(e.reg_open_at)}</td>
-                          <td>{formatDateTime(e.reg_close_at)}</td>
-                          <td>{regCountByEvent.get(e.id) ?? 0}</td>
-                          <td>
-                            <Link
-                              href={`/admin?view=event-create&slug=${encodeURIComponent(e.slug)}`}
-                              className="admin-table-action"
-                            >
-                              Edit
-                            </Link>
-                          </td>
-                        </tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
+              {events.length === 0 ? (
+                <p>Belum ada agenda pertandingan.</p>
+              ) : (
+                <div className="admin-event-grid">
+                  {events.map((e) => (
+                    <article key={e.id} className="admin-event-card">
+                      <div className="admin-event-card__head">
+                        <h3>{e.name}</h3>
+                        <span className={`admin-status-chip is-${e.status.toLowerCase()}`}>
+                          {formatStatusLabel(e.status)}
+                        </span>
+                      </div>
+                      <p className="admin-event-card__slug">Slug: {e.slug}</p>
+                      <div className="admin-event-card__meta">
+                        <span>Buka Reg: {formatDateTime(e.reg_open_at)}</span>
+                        <span>Tutup Reg: {formatDateTime(e.reg_close_at)}</span>
+                        <span>Total Pendaftar: {regCountByEvent.get(e.id) ?? 0}</span>
+                      </div>
+                      <div className="admin-event-card__actions">
+                        <Link
+                          href={`/admin?view=event-dashboard&slug=${encodeURIComponent(e.slug)}`}
+                          className="admin-btn-link"
+                        >
+                          Open Dashboard
+                        </Link>
+                        <Link
+                          href={`/admin?view=event-create&slug=${encodeURIComponent(e.slug)}`}
+                          className="admin-btn-link is-secondary"
+                        >
+                          Edit
+                        </Link>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              )}
             </section>
+          </>
+        ) : null}
+
+        {view === "event-dashboard" ? (
+          <>
+            <section className="panel">
+              <h2>Dashboard Event</h2>
+              {selectedEvent ? (
+                <p>
+                  Event: <strong>{selectedEvent.name}</strong> ({selectedEvent.slug})
+                </p>
+              ) : (
+                <p>Pilih event dari Agenda Pertandingan untuk membuka dashboard event.</p>
+              )}
+            </section>
+
+            {selectedEvent ? (
+              <>
+                <section className="admin-kpi-grid">
+                  <article className="panel">
+                    <h3>Status Event</h3>
+                    <p className="admin-kpi admin-kpi--text">{formatStatusLabel(selectedEvent.status)}</p>
+                  </article>
+                  <article className="panel">
+                    <h3>Total Pendaftar</h3>
+                    <p className="admin-kpi">{regCountByEvent.get(selectedEvent.id) ?? 0}</p>
+                  </article>
+                  <article className="panel">
+                    <h3>Tutup Registrasi</h3>
+                    <p className="admin-kpi admin-kpi--text">{formatDateTime(selectedEvent.reg_close_at)}</p>
+                  </article>
+                </section>
+
+                <section className="admin-event-grid">
+                  <article className="admin-event-card">
+                    <h3>Kelola Event</h3>
+                    <p>Edit identitas event dan detail pertandingan.</p>
+                    <div className="admin-event-card__actions">
+                      <Link
+                        href={`/admin?view=event-create&slug=${encodeURIComponent(selectedEvent.slug)}`}
+                        className="admin-btn-link"
+                      >
+                        Edit Pertandingan
+                      </Link>
+                    </div>
+                  </article>
+
+                  <article className="admin-event-card">
+                    <h3>Peserta & Verifikasi</h3>
+                    <p>Menu ini untuk list pendaftar, verifikasi data, dan verifikasi pembayaran.</p>
+                    <div className="admin-event-card__actions">
+                      <span className="admin-btn-link is-disabled">Segera Dibuat</span>
+                    </div>
+                  </article>
+
+                  <article className="admin-event-card">
+                    <h3>Pairing Group</h3>
+                    <p>Menjalankan algoritma pairing per babak sesuai sistem pertandingan.</p>
+                    <div className="admin-event-card__actions">
+                      <span className="admin-btn-link is-disabled">Segera Dibuat</span>
+                    </div>
+                  </article>
+                </section>
+              </>
+            ) : (
+              <section className="panel">
+                <Link href="/admin?view=event-agenda" className="admin-btn-link">
+                  Kembali ke Agenda Pertandingan
+                </Link>
+              </section>
+            )}
           </>
         ) : null}
 
