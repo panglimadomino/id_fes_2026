@@ -87,7 +87,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
   const totalEvents = events.length;
   const totalPublished = events.filter((e) => e.status === "published").length;
   const totalRegistrations = Array.from(regCountByEvent.values()).reduce((sum, n) => sum + n, 0);
-  const isPertandinganView = view === "event-create" || view === "event-agenda";
+  const isPertandinganView = view === "event-create" || view === "event-agenda" || view === "event-dashboard";
   const selectedEvent = editSlug ? events.find((e) => e.slug === editSlug) ?? null : null;
 
   function formatDateTime(value: string | null) {
@@ -127,7 +127,7 @@ export default async function AdminPage({ searchParams }: AdminPageProps) {
               </Link>
               <Link
                 href="/admin?view=event-agenda"
-                className={`admin-nav__subitem ${view === "event-agenda" ? "is-active" : ""}`}
+                className={`admin-nav__subitem ${view === "event-agenda" || view === "event-dashboard" ? "is-active" : ""}`}
               >
                 Agenda Pertandingan
               </Link>
